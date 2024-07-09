@@ -1,24 +1,22 @@
-plugins {
-    id 'java'
+allprojects {
+    apply plugin: 'java'
+    repositories { mavenCentral() }
+    test { useJUnitPlatform() }
+    java.toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+    dependencies {
+        implementation 'ch.qos.logback:logback-classic:1.5.6'
+        testImplementation platform('org.junit:junit-bom:5.10.3')
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testImplementation 'org.assertj:assertj-core:3.26.0'
+    }
 }
 
-repositories {
-    mavenCentral()
-}
+java { archivesBaseName = 'app' }
 
 dependencies {
     implementation project(':tomcat')
-
-    testImplementation platform('org.junit:junit-bom:5.10.3')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-}
-
-test {
-    useJUnitPlatform()
-}
-
-java {
-    archivesBaseName = 'app'
 }
 
 jar {
