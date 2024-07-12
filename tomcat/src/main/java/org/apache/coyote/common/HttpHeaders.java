@@ -1,5 +1,6 @@
 package org.apache.coyote.common;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -10,18 +11,17 @@ public class HttpHeaders {
 
     private final Map<String, String> headerMap;
 
-    private HttpHeaders(Map<String, String> headerMap) {
-        this.headerMap = headerMap;
-    }
-
-    public static HttpHeaders from(List<String> headers) {
-        final Map<String, String> headerMap = headers.stream()
+    public HttpHeaders(List<String> headers) {
+        this.headerMap = headers.stream()
                 .map(header -> header.split(DELIMITER))
                 .collect(Collectors.toMap(
                         header -> header[0].strip(),
                         header -> header[1].strip()
                 ));
-        return new HttpHeaders(headerMap);
+    }
+
+    public static HttpHeaders of(String... headers) {
+        return new HttpHeaders(Arrays.asList(headers));
     }
 
     public Optional<String> get(String key) {

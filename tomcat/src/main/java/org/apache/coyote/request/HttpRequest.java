@@ -33,7 +33,7 @@ public class HttpRequest {
     }
 
     private static HttpHeaders readRequestHeaders(BufferedReader reader) {
-        return HttpHeaders.from(reader.lines().takeWhile(
+        return new HttpHeaders(reader.lines().takeWhile(
                 line -> !line.isEmpty()
         ).toList());
     }
