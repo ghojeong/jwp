@@ -1,9 +1,11 @@
 package org.apache.coyote.exception;
 
-public class UnsupportedHandlerException extends UnsupportedException {
-    private static final String MESSAGE = "Unsupported Handler: Http Handler is not matched";
+import org.apache.coyote.request.HttpRequest;
 
-    public UnsupportedHandlerException() {
-        super(MESSAGE);
+public class UnsupportedHandlerException extends UnsupportedException {
+    private static final String MESSAGE = "Unsupported Handler: ";
+
+    public UnsupportedHandlerException(HttpRequest request) {
+        super(MESSAGE + request);
     }
 }

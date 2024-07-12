@@ -5,28 +5,34 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.file.Files;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class HomeHandlerTest {
-    private static final HttpHandler handler = HomeHandler.getInstance();
+class FileHandlerTest {
+    private static final HttpHandler handler = FileHandler.getInstance();
 
-    @DisplayName("루트 HTTP 요청을 지원하고 처리할 수 있어야 한다.")
+    @DisplayName("Static File 에 대한 요청을 지원하고 처리할 수 있어야 한다.")
     @Test
     void handle() throws IOException {
         final HttpRequest request = HttpRequest.from(new BufferedReader(new StringReader(
                 String.join(
                         "\r\n",
-                        "GET / HTTP/1.1 ",
-                        "Host: localhost:8080 ",
-                        "Connection: keep-alive ",
+                        "GET /index.html HTTP/1.1",
+                        "Host: localhost:8080",
+                        "Connection: keep-alive",
                         "",
                         ""
                 )
         )));
+
+        final String body = new String(Files.readAllBytes(new File(
+                getClass().getClassLoader().getResource("static/index.html").getFile()
+        ).toPath()));
         assertAll(
                 () -> assertThat(
                         handler.support(request)
@@ -36,10 +42,10 @@ class HomeHandlerTest {
                 ).isEqualTo(String.join(
                         "\r\n",
                         "HTTP/1.1 200 OK",
-                        "Content-Length: 12",
+                        "Content-Length: " + body.length(),
                         "Content-Type: text/html;charset=utf-8",
                         "",
-                        "Hello world!"
+                        body
                 ))
         );
     }

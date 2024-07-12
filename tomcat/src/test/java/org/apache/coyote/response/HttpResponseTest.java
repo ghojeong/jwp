@@ -1,7 +1,7 @@
 package org.apache.coyote.response;
 
+import org.apache.coyote.common.ContentType;
 import org.apache.coyote.common.HttpBody;
-import org.apache.coyote.common.HttpHeaders;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,18 +14,14 @@ class HttpResponseTest {
     void getBytes() {
         final String body = "Hello world!";
         final HttpResponse actual = new HttpResponse(
-                HttpHeaders.of(
-                        "Content-Type: text/html;charset=utf-8 ",
-                        "Content-Length: " + body.length()
-                ),
-                new HttpBody(body)
+                new HttpBody(ContentType.TEXT_HTML, body)
         );
         assertThat(
                 new String(actual.getBytes())
         ).isEqualTo(String.join(
                 "\r\n",
                 "HTTP/1.1 200 OK",
-                "Content-Length: 12",
+                "Content-Length: " + body.length(),
                 "Content-Type: text/html;charset=utf-8",
                 "",
                 "Hello world!"

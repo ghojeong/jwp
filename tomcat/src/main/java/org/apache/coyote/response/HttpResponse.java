@@ -8,14 +8,18 @@ public class HttpResponse {
     private final HttpHeaders headers;
     private final HttpBody body;
 
-    public HttpResponse(StatusLine line, HttpHeaders headers, HttpBody body) {
+    public HttpResponse(HttpBody body, HttpHeaders headers, StatusLine line) {
         this.line = line;
         this.headers = headers;
         this.body = body;
     }
 
-    public HttpResponse(HttpHeaders headers, HttpBody body) {
-        this(StatusLine.ok(), headers, body);
+    public HttpResponse(HttpBody body, HttpHeaders headers) {
+        this(body, headers, StatusLine.ok());
+    }
+
+    public HttpResponse(HttpBody body) {
+        this(body, HttpHeaders.of(body));
     }
 
 

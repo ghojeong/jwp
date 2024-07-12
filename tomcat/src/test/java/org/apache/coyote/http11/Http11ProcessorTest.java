@@ -2,6 +2,7 @@ package org.apache.coyote.http11;
 
 import org.apache.coyote.Processor;
 import org.apache.coyote.support.StubSocket;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class Http11ProcessorTest {
 
+    @DisplayName("루트에 대한 HTTP GET 요청을 처리할 수 있다.")
     @Test
     void process() {
         // given
@@ -33,6 +35,7 @@ class Http11ProcessorTest {
         ));
     }
 
+    @DisplayName("index.html에 대한 HTTP GET 요청을 처리할 수 있다.")
     @Test
     void index() throws IOException {
         // given
@@ -56,14 +59,13 @@ class Http11ProcessorTest {
         final String body = new String(Files.readAllBytes(new File(resource.getFile()).toPath()));
         var expected = String.join(
                 "\r\n",
-                "HTTP/1.1 200 OK ",
-                "Content-Type: text/html;charset=utf-8 ",
-                "Content-Length: " + body.length() + " ",
+                "HTTP/1.1 200 OK",
+                "Content-Length: " + body.length(),
+                "Content-Type: text/html;charset=utf-8",
                 "",
                 body
         );
 
-        // TODO: 통과할 수 있도록 기능 구현을 해야한다.
-        // assertThat(socket.output()).isEqualTo(expected);
+        assertThat(socket.output()).isEqualTo(expected);
     }
 }

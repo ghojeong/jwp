@@ -23,11 +23,11 @@
         - [X] HTTP Protocol 을 인식한다.
     - [X] RequestHeader 를 파싱한다.
     - [X] RequestBody 를 파싱한다.
-- [ ] HttpResponse 를 구현한다.
+- [X] HttpResponse 를 구현한다.
     - [X] HttpHandler 를 통하여 HttpRequest 를 HttpResponse 로 반환한다.
     - [X] HttpResponse 에 StatusLine 을 통해 응답 상태를 표시한다. (200 OK)
     - [X] HttpHeader 와 HttpBody 는 Request 와 Response 에 동일한 로직이 사용된다.
-    - [ ] 요청한 경로의 static file(html, css, js) 을 반환할 수 있도록 한다.
+    - [X] 요청한 경로의 static file(html, css, js) 을 반환할 수 있도록 한다.
 - [ ] Cookie 를 구현한다.
 - [ ] Session 을 구현한다.
 - [ ] Cookie 와 Session 을 활용하여 간단한 로그인 및 회원가입 기능을 구현한다.

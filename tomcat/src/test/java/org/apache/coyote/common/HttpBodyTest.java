@@ -13,8 +13,9 @@ class HttpBodyTest {
         assertAll(
                 () -> assertThat(HttpBody.emptyInstance().getBytes())
                         .isEqualTo(new byte[]{}),
-                () -> assertThat(new HttpBody("Hello world!").toString())
-                        .isEqualTo("Hello world!")
+                () -> assertThat(
+                        new HttpBody(ContentType.TEXT_PLAIN, "Hello world!").toString()
+                ).isEqualTo("Hello world!")
         );
     }
 }

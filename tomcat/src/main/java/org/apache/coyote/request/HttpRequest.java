@@ -1,5 +1,6 @@
 package org.apache.coyote.request;
 
+import org.apache.coyote.common.ContentType;
 import org.apache.coyote.common.HttpBody;
 import org.apache.coyote.common.HttpHeaders;
 import org.apache.coyote.common.HttpProtocol;
@@ -24,7 +25,7 @@ public class HttpRequest {
     public static HttpRequest from(BufferedReader reader) throws IOException {
         final RequestLine line = readRequestLine(reader);
         final HttpHeaders headers = readRequestHeaders(reader);
-        final HttpBody body = readRequestBody(reader, headers.contentLength());
+        final HttpBody body = readRequestBody(reader, headers);
         return new HttpRequest(line, headers, body);
     }
 
@@ -38,17 +39,18 @@ public class HttpRequest {
         ).toList());
     }
 
-    private static HttpBody readRequestBody(BufferedReader reader, int contentLength) throws IOException {
+    private static HttpBody readRequestBody(BufferedReader reader, HttpHeaders headers) throws IOException {
+        final int contentLength = headers.contentLength();
         if (contentLength <= 0) {
             return HttpBody.emptyInstance();
         }
         final char[] body = new char[contentLength];
         reader.read(body);
-        return new HttpBody(new String(body));
+        return new HttpBody(headers.contentType(), new String(body));
     }
 
-    public HttpMethod httpMethod() {
-        return line.httpMethod();
+    public boolean matchMethod(HttpMethod method) {
+        return line.matchMethod(method);
     }
 
     public String path() {
@@ -65,6 +67,10 @@ public class HttpRequest {
 
     public Optional<String> header(String key) {
         return headers.get(key);
+    }
+
+    public ContentType contentType() {
+        return headers.contentType();
     }
 
     public int contentLength() {

@@ -1,8 +1,9 @@
 package org.apache.coyote.handler;
 
+import org.apache.coyote.common.ContentType;
 import org.apache.coyote.common.HttpBody;
-import org.apache.coyote.common.HttpHeaders;
 import org.apache.coyote.request.HttpRequest;
+import org.apache.coyote.request.request_line.HttpMethod;
 import org.apache.coyote.response.HttpResponse;
 
 public final class HomeHandler implements HttpHandler {
@@ -14,18 +15,15 @@ public final class HomeHandler implements HttpHandler {
 
     @Override
     public boolean support(HttpRequest request) {
-        return true;
+        return request.matchMethod(HttpMethod.GET)
+                && request.path().equals("/");
     }
 
     @Override
     public HttpResponse handle(HttpRequest request) {
         final String body = "Hello world!";
         return new HttpResponse(
-                HttpHeaders.of(
-                        "Content-Type: text/html;charset=utf-8 ",
-                        "Content-Length: " + body.length()
-                ),
-                new HttpBody(body)
+                new HttpBody(ContentType.TEXT_HTML, body)
         );
     }
 

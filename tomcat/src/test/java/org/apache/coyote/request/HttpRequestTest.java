@@ -31,8 +31,8 @@ class HttpRequestTest {
         final BufferedReader reader = new BufferedReader(new StringReader(request));
         final HttpRequest actual = HttpRequest.from(reader);
         assertAll(
-                () -> assertThat(actual.httpMethod())
-                        .isEqualTo(HttpMethod.POST),
+                () -> assertThat(actual.matchMethod(HttpMethod.POST))
+                        .isTrue(),
                 () -> assertThat(actual.path())
                         .isEqualTo("/login"),
                 () -> assertThat(actual.queryParam("account"))

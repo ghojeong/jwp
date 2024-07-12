@@ -8,6 +8,7 @@ import java.util.LinkedList;
 public final class HandlerManager {
     private static final LinkedList<HttpHandler> handlers = new LinkedList<>() {{
         add(HomeHandler.getInstance());
+        add(FileHandler.getInstance());
     }};
 
     private HandlerManager() {}
@@ -23,8 +24,8 @@ public final class HandlerManager {
     public byte[] handle(HttpRequest request) {
         return handlers.stream().filter(
                 handler -> handler.support(request)
-        ).findAny().orElseThrow(
-                UnsupportedHandlerException::new
+        ).findFirst().orElseThrow(
+                () -> new UnsupportedHandlerException(request)
         ).handle(request).getBytes();
     }
 

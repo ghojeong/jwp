@@ -25,8 +25,8 @@ public class RequestLine {
         );
     }
 
-    public HttpMethod httpMethod() {
-        return method;
+    public boolean matchMethod(HttpMethod method) {
+        return this.method.equals(method);
     }
 
     public String path() {

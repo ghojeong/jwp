@@ -16,8 +16,8 @@ class RequestLineTest {
     void from() {
         final RequestLine actual = RequestLine.from("POST /login?account=gugu&password=p@ssW0rd HTTP/1.1");
         assertAll(
-                () -> assertThat(actual.httpMethod())
-                        .isEqualTo(HttpMethod.POST),
+                () -> assertThat(actual.matchMethod(HttpMethod.POST))
+                        .isTrue(),
                 () -> assertThat(actual.path())
                         .isEqualTo("/login"),
                 () -> assertThat(actual.queryParam("account"))
