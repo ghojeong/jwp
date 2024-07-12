@@ -5,13 +5,15 @@ import org.apache.coyote.common.HttpBody;
 import org.apache.coyote.request.HttpRequest;
 import org.apache.coyote.request.request_line.HttpMethod;
 import org.apache.coyote.response.HttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
+import java.io.InputStream;
 
 public final class FileHandler implements HttpHandler {
+    private static final Logger logger = LoggerFactory.getLogger(FileHandler.class);
+
     private FileHandler() {}
 
     public static FileHandler getInstance() {
@@ -21,7 +23,7 @@ public final class FileHandler implements HttpHandler {
     @Override
     public boolean support(HttpRequest request) {
         return request.matchMethod(HttpMethod.GET)
-                && getResource(request) != null;
+                && getResourceStream(request) != null;
     }
 
     @Override
@@ -30,21 +32,20 @@ public final class FileHandler implements HttpHandler {
         return new HttpResponse(body);
     }
 
-    private URL getResource(HttpRequest request) {
+    private InputStream getResourceStream(HttpRequest request) {
         final String BASE_PATH = "static";
         return getClass().getClassLoader()
-                .getResource(BASE_PATH + request.path());
+                .getResourceAsStream(BASE_PATH + request.path());
     }
 
     private HttpBody readResource(HttpRequest request) {
-        try {
+        try (InputStream inputStream = getResourceStream(request)) {
             return new HttpBody(
                     ContentType.findByFile(request.path()),
-                    Files.readAllBytes(new File(
-                            getResource(request).getFile()
-                    ).toPath())
+                    inputStream.readAllBytes()
             );
         } catch (IOException exception) {
+            logger.error(exception.getMessage(), exception);
             return HttpBody.emptyInstance();
         }
     }
