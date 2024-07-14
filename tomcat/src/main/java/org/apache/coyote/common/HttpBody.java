@@ -2,6 +2,7 @@ package org.apache.coyote.common;
 
 public class HttpBody {
     private final ContentType contentType;
+    private final CharSet charSet = CharSet.UTF8;
     private final byte[] body;
 
     public HttpBody(ContentType contentType, byte[] body) {
@@ -22,15 +23,14 @@ public class HttpBody {
     }
 
     public String contentType() {
-        return contentType.toString();
+        return contentType.getString() + charSet.getString();
     }
 
     public byte[] getBytes() {
         return body;
     }
 
-    @Override
-    public String toString() {
+    public String getString() {
         return new String(body);
     }
 

@@ -21,7 +21,7 @@ class QueryParamsTest {
                         .isEqualTo(Optional.of("gugu")),
                 () -> assertThat(actual.get("password"))
                         .isEqualTo(Optional.of("p@ssW0rd")),
-                () -> assertThat(actual.toString())
+                () -> assertThat(actual.getString())
                         .isEqualTo("password=p@ssW0rd&account=gugu")
         );
     }

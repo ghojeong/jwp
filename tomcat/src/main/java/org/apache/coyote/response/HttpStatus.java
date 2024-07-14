@@ -18,8 +18,7 @@ public enum HttpStatus {
         this.message = message;
     }
 
-    @Override
-    public String toString() {
+    public String getString() {
         final String SPACE = " ";
         return code + SPACE + message;
     }

@@ -41,9 +41,10 @@ public class RequestLine {
         return protocol;
     }
 
-    @Override
-    public String toString() {
+    public String getString() {
         final String SPACE = " ";
-        return method.name() + SPACE + target + SPACE + protocol;
+        return method.name() + SPACE
+                + target.getString() + SPACE
+                + protocol.getString();
     }
 }

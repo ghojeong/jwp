@@ -39,8 +39,7 @@ public class QueryParams {
         return Optional.ofNullable(queryMap.get(key));
     }
 
-    @Override
-    public String toString() {
+    public String getString() {
         return queryMap.entrySet().stream().map(
                 entry -> entry.getKey() + KEY_VALUE_DELIMITER + entry.getValue()
         ).collect(Collectors.joining(QUERY_DELIMITER));

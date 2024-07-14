@@ -27,10 +27,11 @@ public class StatusLine {
         return SingletonHolder.INTERNAL_SERVER_ERROR;
     }
 
-    @Override
-    public String toString() {
+    public String getString() {
         final String SPACE = " ";
-        return protocol + SPACE + status;
+        return protocol.getString()
+                + SPACE
+                + status.getString();
     }
 
     private static class SingletonHolder {

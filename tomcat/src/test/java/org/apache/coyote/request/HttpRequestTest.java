@@ -47,7 +47,7 @@ class HttpRequestTest {
                         .isEqualTo(Optional.of("keep-alive")),
                 () -> assertThat(actual.contentLength())
                         .isEqualTo(body.length()),
-                () -> assertThat(actual.toString()).isEqualTo(String.join(
+                () -> assertThat(actual.getString()).isEqualTo(String.join(
                         "\r\n",
                         "POST /login?password=p@ssW0rd&account=gugu HTTP/1.1",
                         "Connection: keep-alive",

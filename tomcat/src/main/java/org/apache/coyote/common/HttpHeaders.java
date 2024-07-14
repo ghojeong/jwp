@@ -51,8 +51,7 @@ public class HttpHeaders {
         return this;
     }
 
-    @Override
-    public String toString() {
+    public String getString() {
         final String SEPARATOR = "\r\n";
         return headerMap.entrySet().stream().map(
                 entry -> entry.getKey() + DELIMITER + entry.getValue()

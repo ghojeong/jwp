@@ -26,7 +26,7 @@ class RequestLineTest {
                         .isEqualTo(Optional.of("p@ssW0rd")),
                 () -> assertThat(actual.protocol())
                         .isEqualTo(HttpProtocol.HTTP_11),
-                () -> assertThat(actual.toString())
+                () -> assertThat(actual.getString())
                         .isEqualTo("POST /login?password=p@ssW0rd&account=gugu HTTP/1.1")
         );
     }

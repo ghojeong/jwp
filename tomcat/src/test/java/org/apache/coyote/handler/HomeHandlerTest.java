@@ -32,7 +32,7 @@ class HomeHandlerTest {
                         handler.support(request)
                 ).isTrue(),
                 () -> assertThat(
-                        handler.handle(request).toString()
+                        handler.handle(request).getString()
                 ).isEqualTo(String.join(
                         "\r\n",
                         "HTTP/1.1 200 OK",

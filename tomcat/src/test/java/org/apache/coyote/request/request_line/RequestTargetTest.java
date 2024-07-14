@@ -20,7 +20,7 @@ class RequestTargetTest {
                         .isEqualTo(Optional.of("gugu")),
                 () -> assertThat(actual.queryParam("password"))
                         .isEqualTo(Optional.of("p@ssW0rd")),
-                () -> assertThat(actual.toString())
+                () -> assertThat(actual.getString())
                         .isEqualTo("/login?password=p@ssW0rd&account=gugu")
         );
     }

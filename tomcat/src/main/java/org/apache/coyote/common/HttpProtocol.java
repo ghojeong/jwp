@@ -24,8 +24,7 @@ public enum HttpProtocol {
         return this.name.equals(name);
     }
 
-    @Override
-    public String toString() {
+    public String getString() {
         return name;
     }
 }

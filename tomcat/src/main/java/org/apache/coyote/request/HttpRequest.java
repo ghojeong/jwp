@@ -78,14 +78,13 @@ public class HttpRequest {
     }
 
     public String body() {
-        return body.toString();
+        return body.getString();
     }
 
-    @Override
-    public String toString() {
+    public String getString() {
         final String SEPARATOR = "\r\n";
-        return line + SEPARATOR
-                + headers + SEPARATOR
-                + SEPARATOR + body;
+        return line.getString() + SEPARATOR
+                + headers.getString() + SEPARATOR
+                + SEPARATOR + body.getString();
     }
 }

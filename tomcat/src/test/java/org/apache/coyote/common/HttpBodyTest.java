@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class HttpBodyTest {
     @DisplayName("HttpBody 를 byte 로 변환할 수 있어야 한다.")
     @Test
-    void testToString() {
+    void testgetString() {
         assertAll(
                 () -> assertThat(HttpBody.emptyInstance().getBytes())
                         .isEqualTo(new byte[]{}),
                 () -> assertThat(
-                        new HttpBody(ContentType.TEXT_PLAIN, "Hello world!").toString()
+                        new HttpBody(ContentType.TEXT_PLAIN, "Hello world!").getString()
                 ).isEqualTo("Hello world!")
         );
     }

@@ -29,9 +29,7 @@ public enum ContentType {
                 .findFirst().orElse(TEXT_PLAIN);
     }
 
-    @Override
-    public String toString() {
-        final String UTF_CHARSET = ";charset=utf-8";
-        return contentType + UTF_CHARSET;
+    public String getString() {
+        return contentType;
     }
 }

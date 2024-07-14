@@ -10,23 +10,23 @@ class HttpStatusTest {
 
     @DisplayName("HttpStatus 를 문자열로 바꿀 수 있다.")
     @Test
-    void testToString() {
+    void testgetString() {
         assertAll(
-                () -> assertThat(HttpStatus.OK.toString())
+                () -> assertThat(HttpStatus.OK.getString())
                         .isEqualTo("200 OK"),
-                () -> assertThat(HttpStatus.CREATED.toString())
+                () -> assertThat(HttpStatus.CREATED.getString())
                         .isEqualTo("201 Created"),
-                () -> assertThat(HttpStatus.FOUND.toString())
+                () -> assertThat(HttpStatus.FOUND.getString())
                         .isEqualTo("302 Found"),
-                () -> assertThat(HttpStatus.BAD_REQUEST.toString())
+                () -> assertThat(HttpStatus.BAD_REQUEST.getString())
                         .isEqualTo("400 Bad Request"),
-                () -> assertThat(HttpStatus.UNAUTHORIZED.toString())
+                () -> assertThat(HttpStatus.UNAUTHORIZED.getString())
                         .isEqualTo("401 Unauthorized"),
-                () -> assertThat(HttpStatus.FORBIDDEN.toString())
+                () -> assertThat(HttpStatus.FORBIDDEN.getString())
                         .isEqualTo("403 Forbidden"),
-                () -> assertThat(HttpStatus.NOT_FOUND.toString())
+                () -> assertThat(HttpStatus.NOT_FOUND.getString())
                         .isEqualTo("404 Not Found"),
-                () -> assertThat(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                () -> assertThat(HttpStatus.INTERNAL_SERVER_ERROR.getString())
                         .isEqualTo("500 Internal Server Error")
         );
     }
