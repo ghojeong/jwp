@@ -22,8 +22,13 @@ public final class FileHandler implements HttpHandler {
 
     @Override
     public boolean support(HttpRequest request) {
-        return request.matchMethod(HttpMethod.GET)
-                && getResourceStream(request) != null;
+        if (!request.matchMethod(HttpMethod.GET)) {
+            return false;
+        }
+        getClass().getClassLoader();
+        return ClassLoader.getSystemResource(
+                resourcePath(request)
+        ) != null;
     }
 
     @Override
@@ -33,9 +38,13 @@ public final class FileHandler implements HttpHandler {
     }
 
     private InputStream getResourceStream(HttpRequest request) {
-        final String BASE_PATH = "static";
         return getClass().getClassLoader()
-                .getResourceAsStream(BASE_PATH + request.path());
+                .getResourceAsStream(resourcePath(request));
+    }
+
+    private String resourcePath(HttpRequest request) {
+        final String BASE_PATH = "static";
+        return BASE_PATH + request.path();
     }
 
     private HttpBody readResource(HttpRequest request) {

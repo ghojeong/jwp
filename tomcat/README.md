@@ -2,6 +2,8 @@
 
 ## Tomcat 소스 기반 보일러 코드
 
+### Tomcat
+
 - [Processor](https://github.com/apache/tomcat/blob/main/java/org/apache/coyote/Processor.java)
     - HTTP 요청에 대한 응답을 반환하기 위한 처리를 정의한 인터페이스이다.
 - [Http11Processor](https://github.com/apache/tomcat/blob/main/java/org/apache/coyote/http11/Http11Processor.java)
@@ -10,6 +12,11 @@
     - 소켓의 생성 및 연결을 관리하고, 소켓과 Processor 를 연결하는 연결자이다.
 - [Tomcat](https://github.com/apache/tomcat/blob/main/java/org/apache/catalina/startup/Tomcat.java)
     - tomcat 모듈의 Entry Point 이다. Tomcat.start 메서드를 통해 톰캣 서버를 실행시킬 수 있다.
+
+### [Servlet](https://jakarta.ee/specifications/servlet/6.1/jakarta-servlet-spec-6.1)
+
+Jakarta EE 의 Servlet Request 와 Servlet Response 를 지킬 수 있도록 노력해야한다.  
+가령 HttpRequest 는 getSession() 기능을 제공해야한다.
 
 ## 구현사항
 

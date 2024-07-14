@@ -22,7 +22,6 @@ public class HttpResponse {
         this(body, HttpHeaders.of(body));
     }
 
-
     public byte[] getBytes() {
         return getString().getBytes();
     }
