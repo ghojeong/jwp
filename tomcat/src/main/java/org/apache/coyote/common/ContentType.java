@@ -20,13 +20,13 @@ public enum ContentType {
     public static ContentType findByFile(String fileExtension) {
         return Arrays.stream(values())
                 .filter(type -> fileExtension.endsWith(type.fileExtension))
-                .findAny().orElse(TEXT_PLAIN);
+                .findFirst().orElse(TEXT_PLAIN);
     }
 
     public static ContentType from(String contentType) {
         return Arrays.stream(values())
                 .filter(type -> contentType.startsWith(type.contentType))
-                .findAny().orElse(TEXT_PLAIN);
+                .findFirst().orElse(TEXT_PLAIN);
     }
 
     @Override

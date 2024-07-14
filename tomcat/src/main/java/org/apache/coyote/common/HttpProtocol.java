@@ -17,7 +17,7 @@ public enum HttpProtocol {
 
     public static HttpProtocol from(String name) {
         return Arrays.stream(values()).filter(protocol -> protocol.matches(name))
-                .findAny().orElseThrow(() -> new UnsupportedProtocolException(name));
+                .findFirst().orElseThrow(() -> new UnsupportedProtocolException(name));
     }
 
     private boolean matches(String name) {
