@@ -7,7 +7,7 @@ public enum ContentType {
     TEXT_HTML(".html", "text/html"),
     TEXT_CSS(".css", "text/css"),
     TEXT_XML(".xml", "text/xml"),
-    APPLICATION_JAVASCRIPT(".js", "application/javascript"),
+    TEXT_JAVASCRIPT(".js", "text/javascript"),
     APPLICATION_JSON(".json", "application/json");
     private final String fileExtension;
     private final String contentType;
