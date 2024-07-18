@@ -12,15 +12,26 @@ public class HttpHeaders {
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String DELIMITER = ": ";
 
-    private final Map<String, String> headerMap = new HashMap<>();
+    private final Map<String, String> headerMap;
+    private final Cookies cookies;
 
-    public HttpHeaders(List<String> headers) {
-        headers.stream().map(header -> header.split(DELIMITER))
-                .forEach(header -> headerMap.put(header[0].strip(), header[1].strip()));
+    private HttpHeaders(Map<String, String> headerMap) {
+        final String COOKIE_KEY = "Cookie";
+        this.headerMap = new HashMap<>(headerMap);
+        this.cookies = Cookies.from(headerMap.get(COOKIE_KEY));
+    }
+
+    public static HttpHeaders from(List<String> headers) {
+        return new HttpHeaders(headers.stream().map(
+                header -> header.split(DELIMITER)
+        ).collect(Collectors.toMap(
+                header -> header[0].strip(),
+                header -> header[1].strip()
+        )));
     }
 
     public static HttpHeaders of(String... headers) {
-        return new HttpHeaders(Arrays.asList(headers));
+        return HttpHeaders.from(Arrays.asList(headers));
     }
 
     public static HttpHeaders of(HttpBody body, String... headers) {
@@ -45,9 +56,32 @@ public class HttpHeaders {
         );
     }
 
+    public Optional<String> cookie(String key) {
+        return cookies.get(key);
+    }
+
+    public Optional<String> sessionId() {
+        final String KEY = "JSESSIONID";
+        return cookie(KEY);
+    }
+
+    public HttpHeaders setSession(String sessionId) {
+        final String KEY = "Set-Cookie";
+        final String PREFIX = "JSESSIONID=";
+        return setHeader(Map.of(
+                KEY, PREFIX + sessionId
+        ));
+    }
+
     private HttpHeaders setContentInfo(HttpBody body) {
-        headerMap.put(CONTENT_LENGTH, body.contentLength());
-        headerMap.put(CONTENT_TYPE, body.contentType());
+        return setHeader(Map.of(
+                CONTENT_LENGTH, body.contentLength(),
+                CONTENT_TYPE, body.contentType()
+        ));
+    }
+
+    private HttpHeaders setHeader(Map<String, String> headers) {
+        headerMap.putAll(headers);
         return this;
     }
 

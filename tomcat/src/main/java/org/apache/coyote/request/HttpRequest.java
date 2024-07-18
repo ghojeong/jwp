@@ -34,7 +34,7 @@ public class HttpRequest {
     }
 
     private static HttpHeaders readRequestHeaders(BufferedReader reader) {
-        return new HttpHeaders(reader.lines().takeWhile(
+        return HttpHeaders.from(reader.lines().takeWhile(
                 line -> !line.isEmpty()
         ).toList());
     }
@@ -67,6 +67,14 @@ public class HttpRequest {
 
     public Optional<String> header(String key) {
         return headers.get(key);
+    }
+
+    public Optional<String> cookie(String key) {
+        return headers.cookie(key);
+    }
+
+    public Optional<String> sessionId() {
+        return headers.sessionId();
     }
 
     public ContentType contentType() {

@@ -35,7 +35,10 @@ Jakarta EE 의 Servlet Request 와 Servlet Response 를 지킬 수 있도록 노
     - [X] HttpResponse 에 StatusLine 을 통해 응답 상태를 표시한다. (200 OK)
     - [X] HttpHeader 와 HttpBody 는 Request 와 Response 에 동일한 로직이 사용된다.
     - [X] 요청한 경로의 static file(html, css, js) 을 반환할 수 있도록 한다.
-- [ ] Cookie 를 구현한다.
+- [X] Cookie 를 구현한다.
+    - [X] Cookie 문자열을 파싱하여 key 를 통해 값을 가져올 수 있다.
+    - [X] Request Header 의 Cookie 에서 JSESSIONID 를 읽어올 수 있다.
+    - [X] Response Header 의 Set-Cookie 를 통해 JSESSIONID 설정을 브라우저에게 요구할 수 있다.
 - [ ] Session 을 구현한다.
 - [ ] Cookie 와 Session 을 활용하여 간단한 로그인 및 회원가입 기능을 구현한다.
 - [ ] 동시성 확장을 위한 Thread Pool 혹은 Virtual Thread 를 도입한다. 

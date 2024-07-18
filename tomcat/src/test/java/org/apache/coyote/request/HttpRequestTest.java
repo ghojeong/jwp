@@ -1,5 +1,6 @@
 package org.apache.coyote.request;
 
+import org.apache.coyote.common.ContentType;
 import org.apache.coyote.common.HttpProtocol;
 import org.apache.coyote.request.request_line.HttpMethod;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class HttpRequestTest {
-
     @DisplayName("HttpRequest 의 RequestLine, Headers, Body 를 파싱할 수 있어야 한다.")
     @Test
     void from() throws IOException {
@@ -30,6 +30,7 @@ class HttpRequestTest {
         );
         final BufferedReader reader = new BufferedReader(new StringReader(request));
         final HttpRequest actual = HttpRequest.from(reader);
+        reader.close();
         assertAll(
                 () -> assertThat(actual.matchMethod(HttpMethod.POST))
                         .isTrue(),
@@ -47,6 +48,8 @@ class HttpRequestTest {
                         .isEqualTo(Optional.of("keep-alive")),
                 () -> assertThat(actual.contentLength())
                         .isEqualTo(body.length()),
+                () -> assertThat(actual.contentType())
+                        .isEqualTo(ContentType.TEXT_PLAIN),
                 () -> assertThat(actual.getString()).isEqualTo(String.join(
                         "\r\n",
                         "POST /login?password=p@ssW0rd&account=gugu HTTP/1.1",
@@ -57,6 +60,29 @@ class HttpRequestTest {
                         body
                 ))
         );
+    }
+
+    @DisplayName("HttpRequest 에서 cookie 를 가져올 수 있어야 한다.")
+    @Test
+    void cookie() throws IOException {
+        final String request = String.join(
+                "\r\n",
+                "GET /index.html HTTP/1.1 ",
+                "Host: localhost:8080 ",
+                "Connection: keep-alive ",
+                "Accept: */* ",
+                "Cookie: yummy_cookie=choco; tasty_cookie=strawberry; JSESSIONID=656cef62-e3c4-40bc-a8df-94732920ed46 "
+        );
+        final BufferedReader reader = new BufferedReader(new StringReader(request));
+        final HttpRequest actual = HttpRequest.from(reader);
         reader.close();
+        assertAll(
+                () -> assertThat(actual.cookie("yummy_cookie"))
+                        .isEqualTo(Optional.of("choco")),
+                () -> assertThat(actual.cookie("tasty_cookie"))
+                        .isEqualTo(Optional.of("strawberry")),
+                () -> assertThat(actual.sessionId())
+                        .isEqualTo(Optional.of("656cef62-e3c4-40bc-a8df-94732920ed46"))
+        );
     }
 }
