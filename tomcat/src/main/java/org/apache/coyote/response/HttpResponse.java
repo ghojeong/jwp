@@ -32,6 +32,14 @@ public class HttpResponse {
         this.body = HttpBody.emptyInstance();
     }
 
+    public static HttpResponse redirect(String path) {
+        return new HttpResponse(
+                HttpBody.emptyInstance(),
+                HttpHeaders.redirect(path),
+                StatusLine.found()
+        );
+    }
+
     public byte[] getBytes() {
         return getString().getBytes();
     }

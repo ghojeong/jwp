@@ -36,7 +36,11 @@ public class RequestTarget {
 
     public String getString() {
         final String DELIMITER = "?";
-        return httpPath.getString() + DELIMITER
-                + queryParams.getString();
+        final String query = queryParams.getString();
+        return query.isBlank()
+                ? httpPath.getString()
+                : httpPath.getString()
+                + DELIMITER
+                + query;
     }
 }

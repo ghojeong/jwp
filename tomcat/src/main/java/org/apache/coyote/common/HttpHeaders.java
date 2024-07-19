@@ -38,6 +38,11 @@ public class HttpHeaders {
         return of(headers).setContentInfo(body);
     }
 
+    public static HttpHeaders redirect(String location) {
+        final String PREFIX = "Location: ";
+        return HttpHeaders.of(PREFIX + location);
+    }
+
     public Optional<String> get(String key) {
         return Optional.ofNullable(headerMap.get(key));
     }

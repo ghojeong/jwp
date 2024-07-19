@@ -42,4 +42,19 @@ class HttpResponseTest {
                 ""
         ));
     }
+
+    @DisplayName("Redirect 를 할 때 302 코드와 Location 을 반환해야 한다.")
+    @Test
+    void redirect() {
+        final String location = "/login";
+        assertThat(
+                HttpResponse.redirect(location).getString()
+        ).isEqualTo(String.join(
+                "\r\n",
+                "HTTP/1.1 302 Found",
+                "Location: " + location,
+                "",
+                ""
+        ));
+    }
 }

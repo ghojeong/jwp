@@ -43,4 +43,12 @@ class HttpHeadersTest {
         assertThat(actual.getString())
                 .isEqualTo("Set-Cookie: JSESSIONID=sessionId");
     }
+
+    @DisplayName("Redirect 할 경우, Header 에 Location: location 이 추가되어야 한다.")
+    @Test
+    void setLocation() {
+        final String location = "/login";
+        assertThat(HttpHeaders.redirect(location).getString())
+                .isEqualTo("Location: " + location);
+    }
 }
