@@ -1,5 +1,7 @@
 package org.apache.coyote.request;
 
+import org.apache.catalina.session.Session;
+import org.apache.catalina.session.SessionManager;
 import org.apache.coyote.common.ContentType;
 import org.apache.coyote.common.HttpProtocol;
 import org.apache.coyote.request.request_line.HttpMethod;
@@ -65,13 +67,15 @@ class HttpRequestTest {
     @DisplayName("HttpRequest 에서 cookie 를 가져올 수 있어야 한다.")
     @Test
     void cookie() throws IOException {
+        final String sessionId = SessionManager.getInstance()
+                .createSession().getId();
         final String request = String.join(
                 "\r\n",
                 "GET /index.html HTTP/1.1 ",
                 "Host: localhost:8080 ",
                 "Connection: keep-alive ",
                 "Accept: */* ",
-                "Cookie: yummy_cookie=choco; tasty_cookie=strawberry; JSESSIONID=656cef62-e3c4-40bc-a8df-94732920ed46 "
+                "Cookie: yummy_cookie=choco; tasty_cookie=strawberry; JSESSIONID=" + sessionId
         );
         final BufferedReader reader = new BufferedReader(new StringReader(request));
         final HttpRequest actual = HttpRequest.from(reader);
@@ -81,8 +85,10 @@ class HttpRequestTest {
                         .isEqualTo(Optional.of("choco")),
                 () -> assertThat(actual.cookie("tasty_cookie"))
                         .isEqualTo(Optional.of("strawberry")),
-                () -> assertThat(actual.sessionId())
-                        .isEqualTo(Optional.of("656cef62-e3c4-40bc-a8df-94732920ed46"))
+                () -> assertThat(actual.cookie("JSESSIONID"))
+                        .isEqualTo(Optional.of(sessionId)),
+                () -> assertThat(actual.getSession().map(Session::getId))
+                        .isEqualTo(Optional.of(sessionId))
         );
     }
 }

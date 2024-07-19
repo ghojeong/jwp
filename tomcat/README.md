@@ -10,6 +10,8 @@
     - HTTP1.1 프로토콜을 지원하는 요청에 대한 응답 처리를 실제로 구현한 구현체이다.
 - [Connector](https://github.com/apache/tomcat/blob/main/java/org/apache/catalina/connector/Connector.java)
     - 소켓의 생성 및 연결을 관리하고, 소켓과 Processor 를 연결하는 연결자이다.
+- [Manager](https://github.com/apache/tomcat/blob/main/java/org/apache/catalina/Manager.java)
+    - 세션을 관리하는 매니저이다.
 - [Tomcat](https://github.com/apache/tomcat/blob/main/java/org/apache/catalina/startup/Tomcat.java)
     - tomcat 모듈의 Entry Point 이다. Tomcat.start 메서드를 통해 톰캣 서버를 실행시킬 수 있다.
 
@@ -39,6 +41,11 @@ Jakarta EE 의 Servlet Request 와 Servlet Response 를 지킬 수 있도록 노
     - [X] Cookie 문자열을 파싱하여 key 를 통해 값을 가져올 수 있다.
     - [X] Request Header 의 Cookie 에서 JSESSIONID 를 읽어올 수 있다.
     - [X] Response Header 의 Set-Cookie 를 통해 JSESSIONID 설정을 브라우저에게 요구할 수 있다.
-- [ ] Session 을 구현한다.
+- [X] Session 을 구현한다.
+    - [X] Session 을 새로 등록할 경우 Response 의 Set-Cookie 에 JSESSIONID 가 등록된다.
+    - [X] Request 헤더의 JSESSIONID 를 통해 세션을 가져올 수 있다.
+    - [X] 세션에는 Attribute 들을 등록 및 조회 가능하다.
+    - [X] 세션은 TTL 에 따른 만료일시가 있어, 만료가 되면 SessionManager 와 메모리에서 제거되어야 한다.
+    - [X] 세션의 만료를 확인하는 시기는 세션 조회 성능을 고려하여, 세션을 새로 등록할 때 확인하도록 한다. 목적이 메모리 관리이기 때문에, 엄격하게 만료 일시를 지키지 않기로 한다.
 - [ ] Cookie 와 Session 을 활용하여 간단한 로그인 및 회원가입 기능을 구현한다.
 - [ ] 동시성 확장을 위한 Thread Pool 혹은 Virtual Thread 를 도입한다. 

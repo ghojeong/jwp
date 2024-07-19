@@ -1,5 +1,8 @@
 package org.apache.coyote.request;
 
+import org.apache.catalina.session.Manager;
+import org.apache.catalina.session.Session;
+import org.apache.catalina.session.SessionManager;
 import org.apache.coyote.common.ContentType;
 import org.apache.coyote.common.HttpBody;
 import org.apache.coyote.common.HttpHeaders;
@@ -73,10 +76,6 @@ public class HttpRequest {
         return headers.cookie(key);
     }
 
-    public Optional<String> sessionId() {
-        return headers.sessionId();
-    }
-
     public ContentType contentType() {
         return headers.contentType();
     }
@@ -94,5 +93,11 @@ public class HttpRequest {
         return line.getString() + SEPARATOR
                 + headers.getString() + SEPARATOR
                 + SEPARATOR + body.getString();
+    }
+
+    public Optional<Session> getSession() {
+        final Manager manager = SessionManager.getInstance();
+        return headers.sessionId()
+                .flatMap(manager::findSession);
     }
 }

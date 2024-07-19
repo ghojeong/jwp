@@ -1,7 +1,9 @@
 package org.apache.coyote.handler;
 
+import org.apache.catalina.session.Session;
 import org.apache.coyote.exception.UnsupportedHandlerException;
 import org.apache.coyote.request.HttpRequest;
+import org.apache.coyote.response.HttpResponse;
 
 import java.util.LinkedList;
 
@@ -22,11 +24,15 @@ public final class HandlerManager {
     }
 
     public byte[] handle(HttpRequest request) {
-        return handlers.stream().filter(
+        final HttpResponse response = handlers.stream().filter(
                 handler -> handler.support(request)
         ).findFirst().orElseThrow(
                 () -> new UnsupportedHandlerException(request)
-        ).handle(request).getBytes();
+        ).handle(request);
+        request.getSession().map(
+                Session::getId
+        ).ifPresent(response::setSession);
+        return response.getBytes();
     }
 
     private static class SingletonHolder {
