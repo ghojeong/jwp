@@ -23,6 +23,10 @@ public class StatusLine {
         return SingletonHolder.NOT_FOUND;
     }
 
+    public static StatusLine methodNotAllowed() {
+        return SingletonHolder.METHOD_NOT_ALLOWED;
+    }
+
     public static StatusLine internalServerError() {
         return SingletonHolder.INTERNAL_SERVER_ERROR;
     }
@@ -37,6 +41,7 @@ public class StatusLine {
     private static class SingletonHolder {
         private static final StatusLine OK = new StatusLine(HttpStatus.OK);
         private static final StatusLine NOT_FOUND = new StatusLine(HttpStatus.NOT_FOUND);
+        private static final StatusLine METHOD_NOT_ALLOWED = new StatusLine(HttpStatus.METHOD_NOT_ALLOWED);
         private static final StatusLine INTERNAL_SERVER_ERROR = new StatusLine(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

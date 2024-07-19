@@ -52,6 +52,10 @@ public class HttpRequest {
         return new HttpBody(headers.contentType(), new String(body));
     }
 
+    public String requestLine() {
+        return line.getString();
+    }
+
     public boolean matchMethod(HttpMethod method) {
         return line.matchMethod(method);
     }

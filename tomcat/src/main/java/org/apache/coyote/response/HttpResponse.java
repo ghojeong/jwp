@@ -14,6 +14,10 @@ public class HttpResponse {
         this.body = body;
     }
 
+    public HttpResponse(HttpBody body, StatusLine line) {
+        this(body, HttpHeaders.of(body), line);
+    }
+
     public HttpResponse(HttpBody body, HttpHeaders headers) {
         this(body, headers, StatusLine.ok());
     }

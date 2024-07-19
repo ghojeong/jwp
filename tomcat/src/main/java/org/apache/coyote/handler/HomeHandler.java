@@ -21,13 +21,13 @@ public final class HomeHandler implements HttpHandler {
 
     @Override
     public HttpResponse handle(HttpRequest request) {
-        final String body = "Hello world!";
-        return new HttpResponse(
-                new HttpBody(ContentType.TEXT_HTML, body)
-        );
+        return SingletonHolder.response;
     }
 
     private static class SingletonHolder {
         private static final HomeHandler INSTANCE = new HomeHandler();
+        private static final HttpResponse response = new HttpResponse(
+                new HttpBody(ContentType.TEXT_HTML, "Hello world!")
+        );
     }
 }

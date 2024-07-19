@@ -34,6 +34,8 @@ class HttpRequestTest {
         final HttpRequest actual = HttpRequest.from(reader);
         reader.close();
         assertAll(
+                () -> assertThat(actual.requestLine())
+                        .isEqualTo("POST /login?password=p@ssW0rd&account=gugu HTTP/1.1"),
                 () -> assertThat(actual.matchMethod(HttpMethod.POST))
                         .isTrue(),
                 () -> assertThat(actual.path())

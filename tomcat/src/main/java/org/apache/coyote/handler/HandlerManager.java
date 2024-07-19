@@ -1,6 +1,7 @@
 package org.apache.coyote.handler;
 
 import org.apache.catalina.session.Session;
+import org.apache.coyote.exception.MethodNotAllowedException;
 import org.apache.coyote.exception.UnsupportedHandlerException;
 import org.apache.coyote.request.HttpRequest;
 import org.apache.coyote.response.HttpResponse;
@@ -12,6 +13,8 @@ public final class HandlerManager {
         add(HomeHandler.getInstance());
         add(FileHandler.getInstance());
     }};
+    private static final HttpHandler methodNotAllowedHandler =
+            MethodNotAllowedHandler.getInstance();
 
     private HandlerManager() {}
 
@@ -19,20 +22,30 @@ public final class HandlerManager {
         return SingletonHolder.INSTANCE;
     }
 
-    public void addHandler(HttpHandler handler) {
-        handlers.addFirst(handler);
+    public static void addHandler(HttpHandler... httpHandlers) {
+        for (HttpHandler handler : httpHandlers) {
+            handlers.addFirst(handler);
+        }
     }
 
     public byte[] handle(HttpRequest request) {
-        final HttpResponse response = handlers.stream().filter(
-                handler -> handler.support(request)
-        ).findFirst().orElseThrow(
-                () -> new UnsupportedHandlerException(request)
-        ).handle(request);
+        final HttpResponse response = getResponse(request);
         request.getSession().map(
                 Session::getId
         ).ifPresent(response::setSession);
         return response.getBytes();
+    }
+
+    private HttpResponse getResponse(HttpRequest request) {
+        try {
+            return handlers.stream().filter(
+                    handler -> handler.support(request)
+            ).findFirst().orElseThrow(
+                    () -> new UnsupportedHandlerException(request)
+            ).handle(request);
+        } catch (MethodNotAllowedException e) {
+            return methodNotAllowedHandler.handle(request);
+        }
     }
 
     private static class SingletonHolder {
