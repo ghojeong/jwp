@@ -32,10 +32,10 @@ public class HttpResponse {
         this.body = HttpBody.emptyInstance();
     }
 
-    public static HttpResponse redirect(String path) {
+    public static HttpResponse redirect(String location) {
         return new HttpResponse(
                 HttpBody.emptyInstance(),
-                HttpHeaders.redirect(path),
+                HttpHeaders.redirect(location),
                 StatusLine.found()
         );
     }

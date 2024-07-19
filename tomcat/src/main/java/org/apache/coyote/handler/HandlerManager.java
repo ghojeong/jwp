@@ -12,9 +12,8 @@ public final class HandlerManager {
     private static final LinkedList<HttpHandler> handlers = new LinkedList<>() {{
         add(HomeHandler.getInstance());
         add(FileHandler.getInstance());
+        add(NotFoundHandler.getInstance());
     }};
-    private static final HttpHandler methodNotAllowedHandler =
-            MethodNotAllowedHandler.getInstance();
 
     private HandlerManager() {}
 
@@ -26,6 +25,10 @@ public final class HandlerManager {
         for (HttpHandler handler : httpHandlers) {
             handlers.addFirst(handler);
         }
+    }
+
+    public static void setNotFoundLocation(String location) {
+        NotFoundHandler.setLocation(location);
     }
 
     public byte[] handle(HttpRequest request) {
@@ -44,7 +47,9 @@ public final class HandlerManager {
                     () -> new UnsupportedHandlerException(request)
             ).handle(request);
         } catch (MethodNotAllowedException e) {
-            return methodNotAllowedHandler.handle(request);
+            return MethodNotAllowedHandler
+                    .getInstance()
+                    .handle(request);
         }
     }
 
